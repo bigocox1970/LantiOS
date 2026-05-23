@@ -105,6 +105,7 @@ export interface UserProfile {
     creditsResetDate: string;
     creditsRemaining: number;
     tier: string;
+    isAdmin: boolean;
     tabularModel: string;
     apiKeyStatus: ApiKeyStatus;
 }
@@ -881,5 +882,31 @@ export async function deleteWorkflowShare(
 ): Promise<void> {
     await apiRequest(`/workflows/${workflowId}/shares/${shareId}`, {
         method: "DELETE",
+    });
+}
+
+// Admin
+
+export interface AdminUser {
+    userId: string;
+    email: string;
+    tier: string;
+    messageCreditsUsed: number;
+    creditsResetDate: string | null;
+    createdAt: string;
+}
+
+export async function adminListUsers(): Promise<AdminUser[]> {
+    return apiRequest<AdminUser[]>("/admin/users");
+}
+
+export async function adminUpdateUserTier(
+    userId: string,
+    tier: string,
+): Promise<void> {
+    await apiRequest(`/admin/users/${userId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tier }),
     });
 }

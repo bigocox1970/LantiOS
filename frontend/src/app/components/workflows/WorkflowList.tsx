@@ -390,7 +390,7 @@ export function WorkflowList() {
             <div className="flex-1 overflow-auto">
                 <div className="min-w-max">
                     {/* Column headers */}
-                    <div className="flex items-center h-8 pr-3 md:pr-10 border-b border-border text-xs text-muted-foreground font-medium select-none">
+                    <div className="flex items-center h-10 pr-3 md:pr-10 border-b border-border text-xs text-muted-foreground font-medium select-none">
                         <div className={`sticky left-0 z-[60] ${CHECK_W} relative bg-background flex items-center justify-center self-stretch before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-background`}>
                             {!loading && (
                                 <input

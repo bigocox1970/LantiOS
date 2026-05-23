@@ -12,6 +12,7 @@ import {
 } from "@/lib/server/chatTools";
 import { getUserApiKeys } from "@/lib/server/userSettings";
 import { checkProjectAccess } from "@/lib/server/access";
+import { checkAndConsumeCredit } from "@/lib/server/credits";
 
 export const maxDuration = 300;
 
@@ -147,6 +148,11 @@ export async function POST(request: NextRequest) {
     const apiMessages = buildMessages(enrichedMessages, docAvailability, profileRow?.assistant_name);
     const workflowStore = await buildWorkflowStore(userId, userEmail, db);
     const apiKeys = await getUserApiKeys(userId, db);
+
+    const credit = await checkAndConsumeCredit(userId, db);
+    if (!credit.ok) {
+        return NextResponse.json({ detail: credit.detail, code: "credit_limit" }, { status: credit.status });
+    }
 
     const capturedChatId = chatId;
     const capturedChatTitle = chatTitle;

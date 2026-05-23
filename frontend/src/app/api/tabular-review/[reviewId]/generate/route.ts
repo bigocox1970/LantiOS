@@ -7,6 +7,7 @@ import { normalizeDocxZipPaths } from "@/lib/server/convert";
 import { ensureReviewAccess, filterAccessibleDocumentIds } from "@/lib/server/access";
 import { getUserModelSettings } from "@/lib/server/userSettings";
 import { providerForModel, streamChatWithTools, completeText, type UserApiKeys } from "@/lib/server/llm";
+import { checkAndConsumeCredit } from "@/lib/server/credits";
 
 export const maxDuration = 300;
 
@@ -153,6 +154,11 @@ export async function POST(
     const { tabular_model, api_keys } = await getUserModelSettings(userId, db);
     const missingKey = missingModelApiKey(tabular_model, api_keys);
     if (missingKey) return NextResponse.json({ code: "missing_api_key", ...missingKey }, { status: 422 });
+
+    const credit = await checkAndConsumeCredit(userId, db);
+    if (!credit.ok) {
+        return NextResponse.json({ detail: credit.detail, code: "credit_limit" }, { status: credit.status });
+    }
 
     const encoder = new TextEncoder();
     const stream = new ReadableStream({

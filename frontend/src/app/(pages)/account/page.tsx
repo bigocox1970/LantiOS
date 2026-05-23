@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogOut, Check } from "lucide-react";
+import { LogOut, Check, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserProfile } from "@/contexts/UserProfileContext";
 import { deleteAccount } from "@/app/lib/mikeApi";
@@ -13,6 +13,7 @@ export default function AccountPage() {
     const router = useRouter();
     const { user, signOut } = useAuth();
     const { profile, updateDisplayName, updateOrganisation } = useUserProfile();
+    const FREE_LIMIT = 50;
     const [displayName, setDisplayName] = useState("");
     const [isSavingName, setIsSavingName] = useState(false);
     const [saved, setSaved] = useState(false);
@@ -165,15 +166,43 @@ export default function AccountPage() {
 
             {/* Plan */}
             <div className="py-6">
-                <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center justify-between gap-2 mb-4">
                     <h2 className="text-2xl font-medium font-serif">
                         Usage Plan
                     </h2>
+                    {profile?.isAdmin && (
+                        <Button
+                            variant="outline"
+                            onClick={() => router.push("/admin")}
+                            className="flex items-center gap-1.5 text-xs"
+                        >
+                            <ShieldCheck className="h-3.5 w-3.5" />
+                            Admin Panel
+                        </Button>
+                    )}
                 </div>
-                <div>
-                    <p className="text-base font-medium text-muted-foreground capitalize">
+                <div className="space-y-3">
+                    <p className="text-base font-medium capitalize">
                         {profile?.tier || "Free"}
                     </p>
+                    {profile?.tier === "Free" && (
+                        <div>
+                            <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                                <span>{profile.messageCreditsUsed} of {FREE_LIMIT} messages used this month</span>
+                                {profile.creditsResetDate && (
+                                    <span>
+                                        Resets {new Date(profile.creditsResetDate).toLocaleDateString(undefined, { day: "numeric", month: "short" })}
+                                    </span>
+                                )}
+                            </div>
+                            <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                                <div
+                                    className="h-full rounded-full bg-primary transition-all"
+                                    style={{ width: `${Math.min((profile.messageCreditsUsed / FREE_LIMIT) * 100, 100)}%` }}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 

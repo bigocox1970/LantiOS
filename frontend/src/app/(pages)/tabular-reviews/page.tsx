@@ -298,7 +298,7 @@ export default function TabularReviewsPage() {
             {/* Table */}
             <div className="w-full overflow-x-auto">
                 <div className="min-w-max">
-                <div className="flex items-center h-8 pr-3 md:pr-10 border-b border-border text-xs text-muted-foreground font-medium select-none">
+                <div className="flex items-center h-10 pr-3 md:pr-10 border-b border-border text-xs text-muted-foreground font-medium select-none">
                     <div className={`sticky left-0 z-[60] ${CHECK_W} relative bg-card flex items-center justify-center self-stretch before:absolute before:inset-x-0 before:bottom-0 before:h-px before:bg-card`}>
                         {!loading && (
                             <input

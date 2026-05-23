@@ -26,6 +26,7 @@ interface UserProfile {
     creditsResetDate: string;
     creditsRemaining: number;
     tier: string;
+    isAdmin: boolean;
     tabularModel: string;
     apiKeys: ApiKeyState;
 }
@@ -101,8 +102,9 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                 assistantName: null,
                 messageCreditsUsed: 0,
                 creditsResetDate: futureResetDate.toISOString(),
-                creditsRemaining: 999999, // temporarily unlimited
+                creditsRemaining: 999999,
                 tier: "Free",
+                isAdmin: false,
                 tabularModel: "gemini-3-flash-preview",
                 apiKeys: emptyApiKeys(),
             });

@@ -3,6 +3,7 @@ import { requireAuth } from "@/lib/server/auth";
 import { createServerSupabase } from "@/lib/server/supabase";
 import { DEFAULT_TABULAR_MODEL, resolveModel } from "@/lib/server/llm/models";
 import { getUserApiKeyStatus } from "@/lib/server/userApiKeys";
+import { isAdminTier } from "@/lib/server/credits";
 
 const MONTHLY_CREDIT_LIMIT = 999999;
 
@@ -26,6 +27,7 @@ function serializeProfile(row: UserProfileRow, apiKeyStatus?: unknown) {
         creditsResetDate: row.credits_reset_date,
         creditsRemaining: Math.max(MONTHLY_CREDIT_LIMIT - creditsUsed, 0),
         tier: row.tier || "Free",
+        isAdmin: isAdminTier(row.tier || "Free"),
         tabularModel: resolveModel(row.tabular_model, DEFAULT_TABULAR_MODEL),
         ...(apiKeyStatus ? { apiKeyStatus } : {}),
     };
