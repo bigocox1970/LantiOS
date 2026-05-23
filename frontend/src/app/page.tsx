@@ -4,11 +4,13 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
-import { FileText, MessageSquare, FolderOpen, Workflow } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
+import { FileText, MessageSquare, FolderOpen, Workflow, Sun, Moon } from "lucide-react";
 
 export default function LandingPage() {
     const router = useRouter();
     const { isAuthenticated, authLoading } = useAuth();
+    const { theme, toggleTheme } = useTheme();
 
     useEffect(() => {
         if (!authLoading && isAuthenticated) {
@@ -33,22 +35,26 @@ export default function LandingPage() {
                         <span className="italic">Lanti</span> OS
                     </span>
                 </div>
-                <Link
-                    href="/login"
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                >
-                    Log in
-                </Link>
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={toggleTheme}
+                        className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                        aria-label="Toggle theme"
+                    >
+                        {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                    </button>
+                    <Link
+                        href="/login"
+                        className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                        Log in
+                    </Link>
+                </div>
             </header>
 
             {/* Hero */}
             <main className="flex-1 flex flex-col items-center justify-center px-6 py-20 md:py-32 text-center">
                 <div className="max-w-3xl mx-auto">
-
-                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-full mb-8 border border-primary/20">
-                        Private · Secure · AI-powered
-                    </div>
-
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-normal font-fraunces leading-tight tracking-tight mb-6">
                         Your private<br />
                         <span className="italic text-primary">AI legal</span> assistant
@@ -98,10 +104,7 @@ export default function LandingPage() {
                             desc: "Automate repetitive review tasks with customisable multi-step AI workflows.",
                         },
                     ].map(({ icon: Icon, title, desc }) => (
-                        <div
-                            key={title}
-                            className="bg-card border border-border rounded-2xl p-5"
-                        >
+                        <div key={title} className="bg-card border border-border rounded-2xl p-5">
                             <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                                 <Icon className="w-4.5 h-4.5 text-primary" strokeWidth={1.5} />
                             </div>
@@ -113,10 +116,17 @@ export default function LandingPage() {
             </main>
 
             {/* Footer */}
-            <footer className="px-6 md:px-12 py-6 border-t border-border/50 text-center">
-                <p className="text-xs text-muted-foreground font-body">
-                    Lanti OS is a private instance for legal document analysis. Do not upload sensitive, privileged, or client-identifying documents.
-                </p>
+            <footer className="px-6 md:px-12 py-6 border-t border-border/50">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <p className="text-xs text-muted-foreground font-body text-center sm:text-left">
+                        Lanti OS is a private instance. Do not upload privileged or client-identifying documents.
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+                        <Link href="/terms" className="hover:text-foreground transition-colors">Terms of Use</Link>
+                        <Link href="/cookies" className="hover:text-foreground transition-colors">Cookie Policy</Link>
+                    </div>
+                </div>
             </footer>
 
         </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, EB_Garamond, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { CookieBanner } from "@/components/cookie-banner";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -64,7 +65,10 @@ export default function RootLayout({
                         __html: `(function(){var t=localStorage.getItem('lanti-theme');if(t==='dark'||(t===null&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}})();`,
                     }}
                 />
-                <Providers>{children}</Providers>
+                <Providers>
+                    {children}
+                    <CookieBanner />
+                </Providers>
             </body>
         </html>
     );
