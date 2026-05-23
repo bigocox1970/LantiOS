@@ -55,6 +55,9 @@ export async function POST(request: NextRequest) {
     };
 
     const statusCode = data.base_resp?.status_code;
+    if (statusCode === 2056) {
+        return NextResponse.json({ detail: "quota_exceeded" }, { status: 502 });
+    }
     if (statusCode !== undefined && statusCode !== 0) {
         return NextResponse.json({ detail: data.base_resp?.status_msg ?? "TTS error" }, { status: 502 });
     }

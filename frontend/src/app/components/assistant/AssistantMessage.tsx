@@ -1037,6 +1037,7 @@ function extractTtsText(events: AssistantEvent[], fallback: string): string {
 
 function TtsButton({ text }: { text: string }) {
     const [ttsState, setTtsState] = useState<"idle" | "loading" | "playing">("idle");
+    const [showQuotaModal, setShowQuotaModal] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     const stopAudio = () => {
@@ -1072,7 +1073,17 @@ function TtsButton({ text }: { text: string }) {
                 body: JSON.stringify({ text: text.slice(0, 5000), voiceId, speed: isNaN(speed) ? 1.0 : speed }),
             });
 
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            if (!resp.ok) {
+                if (resp.status === 502) {
+                    const body = await resp.json().catch(() => ({})) as { detail?: string };
+                    if (body.detail === "quota_exceeded") {
+                        setShowQuotaModal(true);
+                        setTtsState("idle");
+                        return;
+                    }
+                }
+                throw new Error(`HTTP ${resp.status}`);
+            }
 
             const blob = await resp.blob();
             const url = URL.createObjectURL(blob);
@@ -1098,20 +1109,45 @@ function TtsButton({ text }: { text: string }) {
     };
 
     return (
-        <button
-            className="p-1.5 rounded text-muted-foreground hover:text-foreground/80 hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
-            onClick={handleClick}
-            disabled={ttsState === "loading"}
-            title={ttsState === "playing" ? "Stop" : "Read aloud"}
-        >
-            {ttsState === "loading" ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            ) : ttsState === "playing" ? (
-                <Square className="h-3.5 w-3.5" fill="currentColor" strokeWidth={0} />
-            ) : (
-                <Volume2 className="h-3.5 w-3.5" />
+        <>
+            <button
+                className="p-1.5 rounded text-muted-foreground hover:text-foreground/80 hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
+                onClick={handleClick}
+                disabled={ttsState === "loading"}
+                title={ttsState === "playing" ? "Stop" : "Read aloud"}
+            >
+                {ttsState === "loading" ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : ttsState === "playing" ? (
+                    <Square className="h-3.5 w-3.5" fill="currentColor" strokeWidth={0} />
+                ) : (
+                    <Volume2 className="h-3.5 w-3.5" />
+                )}
+            </button>
+
+            {showQuotaModal && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                    onClick={() => setShowQuotaModal(false)}
+                >
+                    <div
+                        className="bg-card border border-border rounded-2xl p-6 max-w-sm w-full mx-4 shadow-xl"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h2 className="text-lg font-semibold text-foreground mb-2">Voice quota exceeded</h2>
+                        <p className="text-sm text-muted-foreground mb-5">
+                            The daily voice limit has been reached. It resets every 24 hours.
+                        </p>
+                        <button
+                            className="w-full bg-primary text-primary-foreground rounded-lg py-2 text-sm font-medium hover:opacity-90 transition-opacity"
+                            onClick={() => setShowQuotaModal(false)}
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
             )}
-        </button>
+        </>
     );
 }
 
