@@ -86,8 +86,6 @@ cd /Users/chriscox/Documents/apps/Lanti-OS/frontend && npm run dev
 
 ### `backend/.env`
 ```
-PORT=3001
-FRONTEND_URL=http://localhost:3000
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SECRET_KEY=...
 R2_ENDPOINT_URL=https://your-account.r2.cloudflarestorage.com

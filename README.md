@@ -46,8 +46,6 @@ touch frontend/.env.local
 Create `backend/.env`:
 
 ```bash
-PORT=3001
-FRONTEND_URL=http://localhost:3000
 DOWNLOAD_SIGNING_SECRET=replace-with-a-random-32-byte-hex-string
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SECRET_KEY=your-supabase-service-role-key
@@ -69,7 +67,6 @@ Create `frontend/.env.local`:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your-supabase-anon-key
-NEXT_PUBLIC_API_BASE_URL=http://localhost:3001
 ```
 
 Supabase values come from the project dashboard. Use the project URL for `SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_URL`, the service role key for the backend `SUPABASE_SECRET_KEY`, and the anon/public key for `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY`. If your Supabase project shows multiple key formats, use the legacy JWT-style anon and service role keys expected by the Supabase client libraries.
