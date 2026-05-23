@@ -121,7 +121,7 @@ export default function SignupPage() {
             <div className="w-full max-w-md">
                 <div className="bg-card border border-border rounded-2xl p-8 mb-4">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-left text-2xl font-serif text-foreground">
+                        <h2 className="text-left text-2xl font-semibold text-foreground">
                             Create Account
                         </h2>
                         <div className="bg-muted p-1 rounded-md flex text-xs font-medium">

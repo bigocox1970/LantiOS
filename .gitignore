@@ -17,3 +17,6 @@ frontend/out/
 npm-debug.log*
 .pnpm-debug.log*
 supabase/.temp/
+
+# Local Netlify folder
+.netlify

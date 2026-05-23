@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { LantiIcon } from "@/components/chat/lanti-icon";
 
 interface SiteLogoProps {
     size?: "sm" | "md" | "lg" | "xl";
@@ -34,7 +33,13 @@ export function SiteLogo({
                 animate ? "sidebar-fade-in" : ""
             } ${className}`}
         >
-            <LantiIcon size={iconSizes[size]} />
+            <img
+                src="/favicon-96x96.png"
+                alt="Lanti OS"
+                width={iconSizes[size]}
+                height={iconSizes[size]}
+                className="rounded-sm"
+            />
             <span>Lanti OS</span>
         </h1>
     );
