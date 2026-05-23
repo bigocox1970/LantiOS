@@ -38,7 +38,7 @@ function TierDropdown({
     };
 
     return (
-        <div className="relative inline-block">
+        <div className="relative inline-block" style={{ isolation: "isolate" }}>
             <button
                 onClick={() => setOpen((v) => !v)}
                 disabled={saving}
@@ -57,7 +57,7 @@ function TierDropdown({
                 <ChevronDown className="h-3 w-3 text-muted-foreground" />
             </button>
             {open && (
-                <div className="absolute left-0 top-full mt-1 z-50 w-28 rounded-xl border border-border/60 bg-card shadow-lg overflow-hidden">
+                <div className="absolute left-0 top-full mt-1 z-[9999] w-28 rounded-xl border border-border/60 bg-card shadow-lg overflow-hidden">
                     {TIERS.map((tier) => (
                         <button
                             key={tier}
