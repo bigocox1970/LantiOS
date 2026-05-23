@@ -23,7 +23,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://lantios.netlify.app"),
     title: "Lanti OS - AI Legal Platform",
     description:
         "AI-powered legal document analysis and contract review platform.",
