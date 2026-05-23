@@ -21,15 +21,15 @@ export function SiteLogo({
     };
 
     const iconSizes = {
-        sm: 20,
-        md: 22,
-        lg: 32,
-        xl: 48,
+        sm: 24,
+        md: 32,
+        lg: 48,
+        xl: 72,
     };
 
     const logo = (
         <h1
-            className={`flex items-center gap-2 ${sizeClasses[size]} font-semibold ${
+            className={`flex items-center gap-3 ${sizeClasses[size]} font-normal font-fraunces ${
                 animate ? "sidebar-fade-in" : ""
             } ${className}`}
         >
@@ -38,9 +38,9 @@ export function SiteLogo({
                 alt="Lanti OS"
                 width={iconSizes[size]}
                 height={iconSizes[size]}
-                className="rounded-sm"
+                className="rounded-sm flex-shrink-0"
             />
-            <span>Lanti OS</span>
+            <span><span className="italic">Lanti</span> OS</span>
         </h1>
     );
 
