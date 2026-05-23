@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Environment files — never commit secrets
+.env
+.env.local
+.env.*.local
+backend/.env
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+.pnpm-debug.log*
+supabase/.temp/
