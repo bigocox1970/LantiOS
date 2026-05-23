@@ -30,11 +30,11 @@ export default function LandingPage() {
                 <div className="max-w-3xl mx-auto relative">
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-normal font-fraunces leading-tight tracking-tight mb-6">
                         Your private<br />
-                        <span className="italic text-primary">AI legal</span> assistant
+                        <span className="italic text-primary">legal</span> workspace
                     </h1>
 
                     <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto mb-10 font-body leading-relaxed">
-                        Upload documents, ask questions, and get accurate legal analysis — all in a secure, private workspace built for legal professionals.
+                        AI-powered research, document analysis, and case organisation — built for legal professionals.
                     </p>
 
                     <div className="flex justify-center">
