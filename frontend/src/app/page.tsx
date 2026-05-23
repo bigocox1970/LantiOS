@@ -19,8 +19,15 @@ export default function LandingPage() {
 
     return (
         <PublicLayout>
-            <div className="flex flex-col items-center justify-center px-6 py-12 md:py-20 text-center">
-                <div className="max-w-3xl mx-auto">
+            <div className="relative flex flex-col items-center justify-center px-6 py-12 md:py-20 text-center overflow-hidden">
+
+                {/* Background orbs */}
+                <div className="absolute -top-32 -left-24 w-96 h-96 rounded-full bg-primary/10 blur-3xl pointer-events-none" style={{ animation: 'floatOrb 14s ease-in-out infinite' }} />
+                <div className="absolute -bottom-24 -right-16 w-80 h-80 rounded-full bg-primary/8 blur-3xl pointer-events-none" style={{ animation: 'floatOrbSlow 18s ease-in-out infinite 2s' }} />
+                <div className="absolute top-1/3 right-[8%] w-56 h-56 rounded-full bg-primary/6 blur-2xl pointer-events-none" style={{ animation: 'floatOrb 11s ease-in-out infinite 1s' }} />
+                <div className="absolute bottom-1/4 left-[12%] w-40 h-40 rounded-full bg-primary/8 blur-2xl pointer-events-none" style={{ animation: 'floatOrbSlow 16s ease-in-out infinite 3s' }} />
+
+                <div className="max-w-3xl mx-auto relative">
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-normal font-fraunces leading-tight tracking-tight mb-6">
                         Your private<br />
                         <span className="italic text-primary">AI legal</span> assistant
@@ -63,8 +70,11 @@ export default function LandingPage() {
                             desc: "Automate repetitive review tasks with customisable multi-step AI workflows.",
                         },
                     ].map(({ icon: Icon, title, desc }) => (
-                        <div key={title} className="bg-card border border-border rounded-2xl p-5">
-                            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                        <div
+                            key={title}
+                            className="group bg-card border border-border rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/30"
+                        >
+                            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-colors duration-300 group-hover:bg-primary/20">
                                 <Icon className="w-4.5 h-4.5 text-primary" strokeWidth={1.5} />
                             </div>
                             <h3 className="text-sm font-semibold text-foreground mb-1.5">{title}</h3>
