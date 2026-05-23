@@ -28,16 +28,23 @@ export default function AssistantPage() {
     const [nameSaved, setNameSaved] = useState(false);
 
     const [selectedVoice, setSelectedVoice] = useState("English_Graceful_Lady");
+    const [savedVoice, setSavedVoice] = useState("English_Graceful_Lady");
     const [speed, setSpeed] = useState(1.0);
+    const [savedSpeed, setSavedSpeed] = useState(1.0);
+    const [isSavingVoice, setIsSavingVoice] = useState(false);
+    const [voiceSaved, setVoiceSaved] = useState(false);
     const [previewingVoice, setPreviewingVoice] = useState<string | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
         if (profile?.assistantName) setAssistantName(profile.assistantName);
-        const storedVoice = localStorage.getItem("lanti-voice-id");
-        if (storedVoice) setSelectedVoice(storedVoice);
+        const storedVoice = localStorage.getItem("lanti-voice-id") ?? "English_Graceful_Lady";
+        setSelectedVoice(storedVoice);
+        setSavedVoice(storedVoice);
         const storedSpeed = parseFloat(localStorage.getItem("lanti-voice-speed") ?? "1.0");
-        if (!isNaN(storedSpeed)) setSpeed(storedSpeed);
+        const s = isNaN(storedSpeed) ? 1.0 : storedSpeed;
+        setSpeed(s);
+        setSavedSpeed(s);
     }, [profile]);
 
     const handleSaveName = async () => {
@@ -54,12 +61,21 @@ export default function AssistantPage() {
 
     const handleSelectVoice = (voiceId: string) => {
         setSelectedVoice(voiceId);
-        localStorage.setItem("lanti-voice-id", voiceId);
     };
 
     const handleSpeedChange = (value: number) => {
         setSpeed(value);
-        localStorage.setItem("lanti-voice-speed", String(value));
+    };
+
+    const handleSaveVoiceSettings = async () => {
+        setIsSavingVoice(true);
+        localStorage.setItem("lanti-voice-id", selectedVoice);
+        localStorage.setItem("lanti-voice-speed", String(speed));
+        setSavedVoice(selectedVoice);
+        setSavedSpeed(speed);
+        setIsSavingVoice(false);
+        setVoiceSaved(true);
+        setTimeout(() => setVoiceSaved(false), 2000);
     };
 
     const stopPreview = () => {
@@ -110,6 +126,7 @@ export default function AssistantPage() {
     };
 
     const nameChanged = assistantName.trim() !== (profile?.assistantName ?? "");
+    const voiceChanged = selectedVoice !== savedVoice || Math.abs(speed - savedSpeed) > 0.001;
 
     return (
         <div className="space-y-4">
@@ -225,6 +242,17 @@ export default function AssistantPage() {
                                 {mark === 1.0 ? "1×" : `${mark}×`}
                             </button>
                         ))}
+                    </div>
+                    <div className="pt-2">
+                        <Button
+                            onClick={handleSaveVoiceSettings}
+                            disabled={isSavingVoice || !voiceChanged || voiceSaved}
+                            className="min-w-[80px] transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
+                        >
+                            {isSavingVoice ? "Saving…" : voiceSaved ? (
+                                <><Check className="h-4 w-4 mr-1" />Saved</>
+                            ) : "Save"}
+                        </Button>
                     </div>
                 </div>
             </div>

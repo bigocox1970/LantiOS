@@ -1049,6 +1049,16 @@ function TtsButton({ text }: { text: string }) {
         setTtsState("idle");
     };
 
+    useEffect(() => {
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.src = "";
+                audioRef.current = null;
+            }
+        };
+    }, []);
+
     const handleClick = async () => {
         if (ttsState === "playing") {
             stopAudio();
