@@ -37,14 +37,15 @@ export const metadata: Metadata = {
         type: "website",
         siteName: "Lanti OS",
         title: "Lanti OS - AI Legal Platform",
-        description:
-            "AI-powered legal document analysis and contract review platform.",
+        description: "AI-powered legal document analysis and contract review platform.",
+        url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://lantios.netlify.app",
+        images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
     },
     twitter: {
         card: "summary_large_image",
         title: "Lanti OS - AI Legal Platform",
-        description:
-            "AI-powered legal document analysis and contract review platform.",
+        description: "AI-powered legal document analysis and contract review platform.",
+        images: ["/opengraph-image"],
     },
 };
 
