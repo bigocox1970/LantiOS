@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useUserProfile } from "@/contexts/UserProfileContext";
 import { adminListUsers, adminUpdateUserTier, type AdminUser } from "@/app/lib/mikeApi";
@@ -28,19 +29,61 @@ function TierDropdown({
 }) {
     const [open, setOpen] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
+    const btnRef = useRef<HTMLButtonElement>(null);
+
+    const openMenu = () => {
+        if (!btnRef.current) return;
+        const rect = btnRef.current.getBoundingClientRect();
+        setMenuStyle({
+            position: "fixed",
+            top: rect.bottom + 4,
+            left: rect.left,
+            zIndex: 99999,
+        });
+        setOpen(true);
+    };
+
+    useEffect(() => {
+        if (!open) return;
+        const close = () => setOpen(false);
+        document.addEventListener("mousedown", close);
+        return () => document.removeEventListener("mousedown", close);
+    }, [open]);
 
     const select = async (tier: string) => {
-        if (tier === current) { setOpen(false); return; }
-        setSaving(true);
         setOpen(false);
+        if (tier === current) return;
+        setSaving(true);
         await onChange(userId, tier);
         setSaving(false);
     };
 
+    const menu = open ? createPortal(
+        <div
+            style={menuStyle}
+            className="w-28 rounded-xl border border-border bg-card shadow-xl overflow-hidden"
+            onMouseDown={(e) => e.stopPropagation()}
+        >
+            {TIERS.map((tier) => (
+                <button
+                    key={tier}
+                    onClick={() => select(tier)}
+                    className="flex items-center justify-between w-full px-3 py-2 text-xs text-foreground hover:bg-muted transition-colors"
+                >
+                    {tier}
+                    {tier === current && <Check className="h-3 w-3 text-primary" />}
+                </button>
+            ))}
+        </div>,
+        document.body
+    ) : null;
+
     return (
-        <div className="relative inline-block" style={{ isolation: "isolate" }}>
+        <div className="inline-flex items-center">
             <button
-                onClick={() => setOpen((v) => !v)}
+                ref={btnRef}
+                onClick={openMenu}
                 disabled={saving}
                 className="flex items-center gap-1 text-xs font-medium text-foreground/80 hover:text-foreground transition-colors disabled:opacity-40"
             >
@@ -56,20 +99,7 @@ function TierDropdown({
                 </span>
                 <ChevronDown className="h-3 w-3 text-muted-foreground" />
             </button>
-            {open && (
-                <div className="absolute left-0 top-full mt-1 z-[9999] w-28 rounded-xl border border-border/60 bg-card shadow-lg overflow-hidden">
-                    {TIERS.map((tier) => (
-                        <button
-                            key={tier}
-                            onClick={() => select(tier)}
-                            className="flex items-center justify-between w-full px-3 py-2 text-xs text-muted-foreground hover:bg-muted/50 transition-colors"
-                        >
-                            {tier}
-                            {tier === current && <Check className="h-3 w-3" />}
-                        </button>
-                    ))}
-                </div>
-            )}
+            {menu}
         </div>
     );
 }
