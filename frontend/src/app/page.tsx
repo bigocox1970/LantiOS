@@ -4,13 +4,12 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTheme } from "@/contexts/ThemeContext";
-import { FileText, MessageSquare, FolderOpen, Workflow, Sun, Moon } from "lucide-react";
+import { PublicLayout } from "@/components/public-layout";
+import { FileText, MessageSquare, FolderOpen, Workflow } from "lucide-react";
 
 export default function LandingPage() {
     const router = useRouter();
     const { isAuthenticated, authLoading } = useAuth();
-    const { theme, toggleTheme } = useTheme();
 
     useEffect(() => {
         if (!authLoading && isAuthenticated) {
@@ -19,41 +18,8 @@ export default function LandingPage() {
     }, [authLoading, isAuthenticated, router]);
 
     return (
-        <div className="min-h-dvh bg-background text-foreground flex flex-col">
-
-            {/* Nav */}
-            <header className="flex items-center justify-between px-6 md:px-12 py-5 border-b border-border/50">
-                <div className="flex items-center gap-3">
-                    <img
-                        src="/favicon-96x96.png"
-                        alt="Lanti OS"
-                        width={32}
-                        height={32}
-                        className="rounded-sm"
-                    />
-                    <span className="text-xl font-normal font-fraunces">
-                        <span className="italic">Lanti</span> OS
-                    </span>
-                </div>
-                <div className="flex items-center gap-4">
-                    <button
-                        onClick={toggleTheme}
-                        className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                        aria-label="Toggle theme"
-                    >
-                        {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                    </button>
-                    <Link
-                        href="/login"
-                        className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                        Log in
-                    </Link>
-                </div>
-            </header>
-
-            {/* Hero */}
-            <main className="flex-1 flex flex-col items-center justify-center px-6 py-20 md:py-32 text-center">
+        <PublicLayout>
+            <div className="flex flex-col items-center justify-center px-6 py-12 md:py-20 text-center">
                 <div className="max-w-3xl mx-auto">
                     <h1 className="text-4xl md:text-6xl lg:text-7xl font-normal font-fraunces leading-tight tracking-tight mb-6">
                         Your private<br />
@@ -64,24 +30,17 @@ export default function LandingPage() {
                         Upload documents, ask questions, and get accurate legal analysis — all in a secure, private workspace built for legal professionals.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <Link
-                            href="/login"
-                            className="inline-flex items-center justify-center bg-primary text-primary-foreground px-8 py-3 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
-                        >
-                            Log in
-                        </Link>
+                    <div className="flex justify-center">
                         <Link
                             href="/signup"
-                            className="inline-flex items-center justify-center bg-muted text-foreground px-8 py-3 rounded-xl text-sm font-medium hover:bg-muted/80 transition-colors border border-border"
+                            className="inline-flex items-center justify-center bg-primary text-primary-foreground px-8 py-3 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
                         >
-                            Get started
+                            Get started for free
                         </Link>
                     </div>
                 </div>
 
-                {/* Features */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mt-24 text-left">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mt-16 text-left">
                     {[
                         {
                             icon: FileText,
@@ -113,22 +72,7 @@ export default function LandingPage() {
                         </div>
                     ))}
                 </div>
-            </main>
-
-            {/* Footer */}
-            <footer className="px-6 md:px-12 py-6 border-t border-border/50">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-                    <p className="text-xs text-muted-foreground font-body text-center sm:text-left">
-                        Lanti OS is a private instance. Do not upload privileged or client-identifying documents.
-                    </p>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
-                        <Link href="/terms" className="hover:text-foreground transition-colors">Terms of Use</Link>
-                        <Link href="/cookies" className="hover:text-foreground transition-colors">Cookie Policy</Link>
-                    </div>
-                </div>
-            </footer>
-
-        </div>
+            </div>
+        </PublicLayout>
     );
 }

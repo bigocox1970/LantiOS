@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { PublicLayout } from "@/components/public-layout";
 
 export const metadata = {
     title: "Privacy Policy — Lanti OS",
@@ -6,21 +6,12 @@ export const metadata = {
 
 export default function PrivacyPage() {
     return (
-        <div className="min-h-dvh bg-background text-foreground">
-            <header className="flex items-center justify-between px-6 md:px-12 py-5 border-b border-border/50">
-                <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                    <img src="/favicon-96x96.png" alt="Lanti OS" width={28} height={28} className="rounded-sm" />
-                    <span className="text-lg font-normal font-fraunces">
-                        <span className="italic">Lanti</span> OS
-                    </span>
-                </Link>
-            </header>
-
-            <main className="max-w-2xl mx-auto px-6 py-16">
+        <PublicLayout>
+            <div className="max-w-2xl mx-auto px-6 py-16">
                 <h1 className="text-4xl font-normal font-fraunces mb-2">Privacy Policy</h1>
                 <p className="text-sm text-muted-foreground font-body mb-10">Last updated: May 2026</p>
 
-                <div className="prose prose-sm max-w-none font-body text-foreground space-y-8">
+                <div className="font-body text-foreground space-y-8">
 
                     <section>
                         <h2 className="text-lg font-semibold mb-3">1. Who we are</h2>
@@ -86,15 +77,7 @@ export default function PrivacyPage() {
                     </section>
 
                 </div>
-            </main>
-
-            <footer className="px-6 md:px-12 py-6 border-t border-border/50 text-center">
-                <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-                    <Link href="/terms" className="hover:text-foreground transition-colors">Terms of Use</Link>
-                    <Link href="/cookies" className="hover:text-foreground transition-colors">Cookie Policy</Link>
-                    <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
-                </div>
-            </footer>
-        </div>
+            </div>
+        </PublicLayout>
     );
 }
